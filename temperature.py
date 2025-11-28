@@ -8,7 +8,7 @@ def generer_liste():
 def generer_couleur(lst):
     dictionnaire={}
     for dico in lst:
-        tmp={"nom":dico["departement"],"date":dico["date_obs"]}
+        tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4]}
         if dico["tmoy"]!=None:
             if dico['tmoy']<=15 and dico['tmoy']>=10:
                 tmp["couleur"]="#FFF069"#jaune
@@ -20,11 +20,13 @@ def generer_couleur(lst):
                 tmp["couleur"]="#00E1FA"#bleu
         else:
             tmp["couleur"]=None
-        
-        dictionnaire[dico["code_insee_departement"]]=tmp
+        if len (dico["code_insee_departement"])==2:
+            dictionnaire[dico["code_insee_departement"]]=tmp
+        else:
+            dictionnaire["0"+dico["code_insee_departement"]]=tmp
     return dictionnaire
 
 
 L=generer_liste()
 couleurs=generer_couleur(L)
-print(couleurs)
+print(couleurs["02"])
