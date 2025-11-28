@@ -5,28 +5,30 @@ def generer_liste():
         liste=json.load(fichier)
         return liste
 
-def generer_couleur(lst):
+def generer_dico(lst):
     dictionnaire={}
     for dico in lst:
         tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4]}
         if dico["tmoy"]!=None:
-            if dico['tmoy']<=15 and dico['tmoy']>=10:
-                tmp["couleur"]="#FFF069"#jaune
-            elif dico['tmoy']>=15 and dico['tmoy']<=20:
-                tmp["couleur"]="#FA7100"#orange
-            elif dico['tmoy']>20:
-                tmp["couleur"]="#FA0000"#rouge
-            else:
-                tmp["couleur"]="#00E1FA"#bleu
+            tmp["couleur"]=generer_couleur(dico["tmoy"])
         else:
             tmp["couleur"]=None
-        if len (dico["code_insee_departement"])==2:
-            dictionnaire[dico["code_insee_departement"]]=tmp
+        if dico["code_insee_departement"] in ["01","02","03","04","05","06","07","08","09"]:
+            dictionnaire[dico["code_insee_departement"][-1]]=tmp
         else:
-            dictionnaire["0"+dico["code_insee_departement"]]=tmp
+            dictionnaire[dico["code_insee_departement"]]=tmp
     return dictionnaire
 
+def generer_couleur(nb):
+    if nb<=15 and nb>=10:
+        return "#FFF069"   #jaune
+    elif nb>=15 and nb<=20:
+        return "#FA7100"  #orange
+    elif nb>20:
+        return "#FA0000"  #rouge
+    else:
+        return "#00E1FA"  #bleu
 
 L=generer_liste()
-couleurs=generer_couleur(L)
-print(couleurs["02"])
+couleurs=generer_dico(L)
+print(couleurs["1"])
