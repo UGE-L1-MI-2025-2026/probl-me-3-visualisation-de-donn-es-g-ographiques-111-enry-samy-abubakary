@@ -1,5 +1,6 @@
 import shapefile
 from fltk import *
+import conversion
 
 sf = shapefile.Reader("departements-20180101")
 
