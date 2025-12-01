@@ -5,7 +5,7 @@ sf = shapefile.Reader("departements-20180101")
 
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
-    dep_code = str(record[0])  # ex: "75", "29", "974"
+    dep_code = str(record[0])
     
     if not dep_code.startswith(("97", "98")):  
         shapes_metro.append(shapeRec)
