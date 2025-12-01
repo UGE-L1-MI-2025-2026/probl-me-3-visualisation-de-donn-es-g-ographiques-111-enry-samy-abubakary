@@ -20,9 +20,3 @@ def wsg84_vers_mercator(lon,lat):
 
 
 
-import random
-
-Exemple = wsg84_vers_mercator(2.3522, 48.8566)
-print(Exemple)
-print(random.uniform(-180, 180))
-print(random.uniform(-90, 90))
