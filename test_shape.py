@@ -4,8 +4,7 @@ import conversion
 from temperature import *
 sf = shapefile.Reader("departements-20180101")
 
-for record in sf.records():
-    print(record)
+
 L=generer_liste()
 couleurs=generer_dico(L,"2025")
 shapes_metro = []
@@ -33,31 +32,37 @@ scaled_h = height * scale
 offset_x = (window_w - scaled_w) / 2
 offset_y = (window_h - scaled_h) / 2
 
-
-#print(shapes_metro)
-for shape_rec in shapes_metro:
-    pts = shape_rec[0].points
-    #print(pts)
-    parts = list(shape_rec[0].parts) + [len(pts)]
-
-
-    for i in range(len(parts) - 1):
-        start = parts[i]
-        end = parts[i + 1]
-        segment = pts[start:end]
-
-        poly = []
-        for x, y in segment:
-            X = (x - minx) * scale + offset_x
-            Y = window_h - ((y - miny) * scale + offset_y)
-            poly.append((X, Y))
-        if shape_rec[1] in couleurs.keys():
-            polygone(poly,remplissage=couleurs[shape_rec[1]]["couleur"])
-        else:
-            print(shape_rec[1])
-        #print(couleurs[str(nb)]["nom"],couleurs[str(nb)]["couleur"],poly)
+parcours_date = ["2018","2019","2020","2021","2022","2023","2024","2025"]
+for date in parcours_date:
+    couleurs=generer_dico(L,date)
+    texte(10, 10, date , couleur="black", taille=40)
+    texte(140, 10, "cest chaud" , couleur="#FA0000", taille=20)
+    texte(300, 10, "cest froid" , couleur="#00E1FA", taille=20)
+    texte(440, 10, "cest chaud mais ca va" , couleur="#FA7100", taille=20)
+    texte(740, 10, "cest froid  mais ca va" , couleur="#FFF069", taille=20)
+    for shape_rec in shapes_metro:
+        pts = shape_rec[0].points
+        #print(pts)
+        parts = list(shape_rec[0].parts) + [len(pts)]
 
 
+        for i in range(len(parts) - 1):
+            start = parts[i]
+            end = parts[i + 1]
+            segment = pts[start:end]
 
-attend_ev()
+            poly = []
+            for x, y in segment:
+                X = (x - minx) * scale + offset_x
+                Y = window_h - ((y - miny) * scale + offset_y)
+                poly.append((X, Y))
+            if shape_rec[1] in couleurs.keys():
+                polygone(poly,remplissage=couleurs[shape_rec[1]]["couleur"])
+            
+            
+
+
+
+    attente(1)
+    efface_tout()
 ferme_fenetre()
