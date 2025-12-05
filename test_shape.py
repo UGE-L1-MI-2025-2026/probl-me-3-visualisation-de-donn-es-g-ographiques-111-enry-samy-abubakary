@@ -7,7 +7,7 @@ sf = shapefile.Reader("departements-20180101")
 for record in sf.records():
     print(record)
 L=generer_liste()
-couleurs=generer_dico(L,"2025")
+couleurs=generer_dico(L,"2018")
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
     dep_code = str(record[0])  # ex: "75", "29", "974"
@@ -54,7 +54,7 @@ for shape_rec in shapes_metro:
         if shape_rec[1] in couleurs.keys():
             polygone(poly,remplissage=couleurs[shape_rec[1]]["couleur"])
         else:
-            print(shape_rec[1])
+            polygone(poly)
         #print(couleurs[str(nb)]["nom"],couleurs[str(nb)]["couleur"],poly)
 
 
