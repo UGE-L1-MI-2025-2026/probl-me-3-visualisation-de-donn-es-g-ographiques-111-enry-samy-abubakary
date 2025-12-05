@@ -9,7 +9,7 @@ def generer_dico(lst,annee):
     dictionnaire={}
     i=0
     for dico in lst:
-        tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4],"num_dep":dico["code_insee_departement"]}
+        tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4],"num_dep":dico["code_insee_departement"],'t':dico['tmoy']}
         if tmp["date"]==annee:
             if dico["tmoy"]==None:
                 tmp["couleur"]=None
