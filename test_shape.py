@@ -4,15 +4,10 @@ import conversion
 from temperature import *
 sf = shapefile.Reader("departements-20180101")
 L=generer_liste()
-couleurs=generer_dico(L)
+couleurs=generer_dico(L,"2025")
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
     dep_code = str(record[0])  # ex: "75", "29", "974"
-
-
-
-
-    
     if not dep_code.startswith(("97", "98")):  
         shapes_metro.append(shapeRec)
 
