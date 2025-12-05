@@ -1,5 +1,6 @@
 import shapefile
 from fltk import *
+import conversion
 from temperature import *
 sf = shapefile.Reader("departements-20180101")
 L=generer_liste()
@@ -7,6 +8,10 @@ couleurs=generer_dico(L)
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
     dep_code = str(record[0])  # ex: "75", "29", "974"
+
+
+
+
     
     if not dep_code.startswith(("97", "98")):  
         shapes_metro.append(shapeRec)
@@ -29,7 +34,9 @@ scaled_w = width * scale
 scaled_h = height * scale
 offset_x = (window_w - scaled_w) / 2
 offset_y = (window_h - scaled_h) / 2
+
 nb=0
+
 for shape_rec in shapes_metro:
     pts = shape_rec.points
     parts = list(shape_rec.parts) + [len(pts)]
