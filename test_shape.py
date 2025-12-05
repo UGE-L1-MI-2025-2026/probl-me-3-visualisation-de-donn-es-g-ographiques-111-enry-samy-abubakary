@@ -3,18 +3,21 @@ from fltk import *
 import conversion
 from temperature import *
 sf = shapefile.Reader("departements-20180101")
+
+for record in sf.records():
+    print(record)
 L=generer_liste()
 couleurs=generer_dico(L,"2025")
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
     dep_code = str(record[0])  # ex: "75", "29", "974"
     if not dep_code.startswith(("97", "98")):  
-        shapes_metro.append(shapeRec)
+        shapes_metro.append((shapeRec,record[1]))
 
-minx = min(min(shp.bbox[0], shp.bbox[2]) for shp in shapes_metro)
-miny = min(min(shp.bbox[1], shp.bbox[3]) for shp in shapes_metro)
-maxx = max(max(shp.bbox[0], shp.bbox[2]) for shp in shapes_metro)
-maxy = max(max(shp.bbox[1], shp.bbox[3]) for shp in shapes_metro)
+minx = min(min(shp[0].bbox[0], shp[0].bbox[2]) for shp in shapes_metro)
+miny = min(min(shp[0].bbox[1], shp[0].bbox[3]) for shp in shapes_metro)
+maxx = max(max(shp[0].bbox[0], shp[0].bbox[2]) for shp in shapes_metro)
+maxy = max(max(shp[0].bbox[1], shp[0].bbox[3]) for shp in shapes_metro)
 
 width = maxx - minx
 height = maxy - miny
@@ -30,11 +33,12 @@ scaled_h = height * scale
 offset_x = (window_w - scaled_w) / 2
 offset_y = (window_h - scaled_h) / 2
 
-nb=0
 
+#print(shapes_metro)
 for shape_rec in shapes_metro:
-    pts = shape_rec.points
-    parts = list(shape_rec.parts) + [len(pts)]
+    pts = shape_rec[0].points
+    #print(pts)
+    parts = list(shape_rec[0].parts) + [len(pts)]
 
 
     for i in range(len(parts) - 1):
@@ -47,9 +51,12 @@ for shape_rec in shapes_metro:
             X = (x - minx) * scale + offset_x
             Y = window_h - ((y - miny) * scale + offset_y)
             poly.append((X, Y))
-        polygone(poly,remplissage=couleurs[str(nb)]["couleur"])
-        #print(couleurs[str(nb)]["nom"],couleurs[str(nb)]["couleur"])
-        nb+=1
+        if shape_rec[1] in couleurs.keys():
+            polygone(poly,remplissage=couleurs[shape_rec[1]]["couleur"])
+        else:
+            print(shape_rec[1])
+        #print(couleurs[str(nb)]["nom"],couleurs[str(nb)]["couleur"],poly)
+
 
 
 attend_ev()

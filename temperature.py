@@ -17,17 +17,19 @@ def generer_dico(lst,annee):
                 tmp["couleur"]=generer_couleur(dico["tmoy"])
             if tmp["date"]==annee:
                 #print(dico["tmoy"],dico["departement"],tmp["couleur"],tmp["date"])
-                dictionnaire[str(i)]=tmp
+                dictionnaire[dico["departement"]]=tmp
                 i+=1
     return dictionnaire
 
 def generer_couleur(nb):
-    if nb<=15 and nb>=12:
+    if nb<=11 and nb>=8:
         return "#FFF069"   #jaune
-    elif nb>=15 and nb<=20:
+    elif nb>=12 and nb<=15:
         return "#FA7100"  #orange
-    elif nb>20:
+    elif nb>16:
         return "#FA0000"  #rouge
     else:
         return "#00E1FA"  #bleu
 
+dico=generer_dico(generer_liste(),"2025")
+print(dico)
