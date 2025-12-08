@@ -5,18 +5,17 @@ def generer_liste():
         liste=json.load(fichier)
         return liste
 
-def generer_dico(lst,annee):
+def generer_dico(lst,annee,m):
     dictionnaire={}
     i=0
     for dico in lst:
-        tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4],"num_dep":dico["code_insee_departement"],'t':dico['tmoy']}
+        tmp={"nom":dico["departement"],"date":dico["date_obs"][0:4],"num_dep":dico["code_insee_departement"],'t':dico[m]}
         if tmp["date"]==annee:
-            if dico["tmoy"]==None:
+            if dico[m]==None:
                 tmp["couleur"]=None
             else:
-                tmp["couleur"]=generer_couleur(dico["tmoy"])
+                tmp["couleur"]=generer_couleur(dico[m])
             if tmp["date"]==annee:
-                #print(dico["tmoy"],dico["departement"],tmp["couleur"],tmp["date"])
                 dictionnaire[dico["departement"]]=tmp
                 i+=1
     return dictionnaire
@@ -31,5 +30,3 @@ def generer_couleur(nb):
     else:
         return "#00E1FA"  #bleu
 
-dico=generer_dico(generer_liste(),"2025")
-print(dico)

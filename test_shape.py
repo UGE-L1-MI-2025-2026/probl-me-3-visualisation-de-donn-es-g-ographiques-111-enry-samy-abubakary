@@ -2,11 +2,11 @@ import shapefile
 from fltk import *
 import conversion
 from temperature import *
+from ecran_accueil import *
 sf = shapefile.Reader("departements-20180101")
 
 
 L=generer_liste()
-couleurs=generer_dico(L,"2018")
 shapes_metro = []
 for shapeRec, record in zip(sf.shapes(), sf.records()):
     dep_code = str(record[0])  # ex: "75", "29", "974"
@@ -33,13 +33,8 @@ offset_x = (window_w - scaled_w) / 2
 offset_y = (window_h - scaled_h) / 2
 
 parcours_date = ["2018","2019","2020","2021","2022","2023","2024","2025"]
-for date in parcours_date:
-    couleurs=generer_dico(L,date)
-    texte(10, 10, date , couleur="black", taille=40)
-    texte(140, 10, "cest chaud" , couleur="#FA0000", taille=20)
-    texte(300, 10, "cest froid" , couleur="#00E1FA", taille=20)
-    texte(440, 10, "cest chaud mais ca va" , couleur="#FA7100", taille=20)
-    texte(740, 10, "cest froid  mais ca va" , couleur="#FFF069", taille=20)
+
+def dessiner_france(couleurs):
     for shape_rec in shapes_metro:
         pts = shape_rec[0].points
         #print(pts)
@@ -59,12 +54,65 @@ for date in parcours_date:
                 poly.append((X, Y))
             if shape_rec[1] in couleurs.keys():
                 polygone(poly,remplissage=couleurs[shape_rec[1]]["couleur"])
-            
-            
+            else:
+                polygone(poly)
+
+def afficher_txt(date):
+    texte(10, 10, date , couleur="black", taille=40)
+    texte(140, 10, "cest chaud" , couleur="#FA0000", taille=20)
+    texte(300, 10, "cest froid" , couleur="#00E1FA", taille=20)
+    texte(440, 10, "cest chaud mais ca va" , couleur="#FA7100", taille=20)
+    texte(740, 10, "cest froid  mais ca va" , couleur="#FFF069", taille=20)
+
+def appels(date,mode):
+    couleurs=generer_dico(L,date,mode)
+    afficher_txt(date)
+    dessiner_france(couleurs)
 
 
+def parcours():
+    mode=accueil()
+    i=0
+    date=parcours_date[i]
+    appels(date,mode)
+    while True:
+        date=parcours_date[i]
+        appels(date,mode)
+        ev = attend_ev()
+        tev = type_ev(ev)
+        if tev=='Touche':
+            if touche(ev)=='Right':
+                if i==len(parcours_date)-1:
+                    i=0
+                else:
+                    i+=1
+                date=parcours_date[i]
+                efface_tout()
+            if touche(ev)=='Left':
+                if i!=0:
+                    i-=1
+                else:
+                    i=len(parcours_date)-1
+                date=parcours_date[i]
+                efface_tout()
+        elif tev=='Quitte':
+            break
+    ferme_fenetre()
 
+def accueil():
+    ecran_accueil()
+    while True:
+        
+        ev = attend_ev()
+        tev = type_ev(ev)
+        
+        if tev == "ClicGauche":
+            x,y=abscisse(ev),ordonnee(ev)
+            if detecter_mode(x,y)!=None:
+                efface_tout()
+                return detecter_mode(x,y)
+        elif tev=="Quitte":
+            ferme_fenetre()
+            break
 
-    attente(1)
-    efface_tout()
-ferme_fenetre()
+parcours()
