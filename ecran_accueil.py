@@ -3,7 +3,7 @@ from fltk import *
 def ecran_accueil():
     x1,y1,x2,y2=400,350,800,450
     x,y=425,385
-    texte(150,50,chaine='Quelle donnees voulez vous afficher ?',taille=40)
+    texte(150,50,chaine='Quelles donnees voulez vous afficher ?',taille=40)
     rectangle(x1,y1,x2,y2,remplissage="#C72300")
     texte(x,y,taille=24,chaine="Temperature maximale")
     rectangle(x1,y1+150,x2,y2+150,remplissage="#FF6A00")
