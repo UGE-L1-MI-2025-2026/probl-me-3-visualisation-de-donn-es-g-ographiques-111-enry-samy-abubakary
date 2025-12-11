@@ -1,6 +1,6 @@
 import shapefile
 from fltk import *
-import conversion
+
 from temperature import *
 from ecran_accueil import *
 sf = shapefile.Reader("departements-20180101")
@@ -57,16 +57,29 @@ def dessiner_france(couleurs):
             else:
                 polygone(poly)
 
-def afficher_txt(date):
+def afficher_txt(date,mode):
+    
     texte(10, 10, date , couleur="black", taille=40)
-    texte(140, 10, "cest chaud" , couleur="#FA0000", taille=20)
-    texte(300, 10, "cest froid" , couleur="#00E1FA", taille=20)
-    texte(440, 10, "cest chaud mais ca va" , couleur="#FA7100", taille=20)
-    texte(740, 10, "cest froid  mais ca va" , couleur="#FFF069", taille=20)
+    if mode =='tmax':
+        texte(140, 10, "Très chaud" , couleur="#FA0000", taille=20)
+        texte(300, 10, "Moyen" , couleur="#00E1FA", taille=20)
+        texte(440, 10, "Chaud" , couleur="#FA7100", taille=20)
+        texte(550, 10, "Moyen-chaud" , couleur="#FFF069", taille=20)
+    if mode =='tmoy':
+        texte(140, 10, "Moyenne haute" , couleur="#FA0000", taille=20)
+        texte(350, 10, "Moyenne basse" , couleur="#00E1FA", taille=20)
+        texte(600, 10, "Moyen-haut" , couleur="#FA7100", taille=20)
+        texte(780, 10, "Moyen-bas" , couleur="#FFF069", taille=20)    
+    if mode =='tmin':
+        texte(140, 10, "Moyen" , couleur="#FA0000", taille=20)
+        texte(300, 10, "Très froid" , couleur="#00E1FA", taille=20)
+        texte(560, 10, "Moyen-froid" , couleur="#FA7100", taille=20)
+        texte(760, 10, "Froid" , couleur="#FFF069", taille=20)  
+
 
 def appels(date,mode):
     couleurs=generer_dico(L,date,mode)
-    afficher_txt(date)
+    afficher_txt(date,mode)
     dessiner_france(couleurs)
 
 

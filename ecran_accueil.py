@@ -14,7 +14,7 @@ def ecran_accueil():
 
 def detecter_mode(x,y):
     x1,y1,x2,y2=400,350,800,450
-    x,y=425,385
+    
     if x>=x1 and x<=x2 and y>=y1 and y<=y2:
         return 'tmax'
     elif x>=x1 and x<=x2 and y>=y1+150 and y<=y2+150:
